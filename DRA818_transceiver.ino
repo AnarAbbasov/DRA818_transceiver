@@ -32,7 +32,7 @@ void setup() {
    *  dra->volume(8);
    *  dra->filters(true, true, true);
    */
-  dra = DRA818::configure(dra_serial, DRA818_VHF, 146.520, 146.520, 4, 2, 0, 0, DRA818_12K5, true, true, true);
+  dra = DRA818::configure(dra_serial, DRA818_VHF, 146.520, 146.520, 1, 2, 0, 0, DRA818_12K5, true, true, true);
  
   if (!dra) {
     Serial.println("\nError while configuring DRA818");
