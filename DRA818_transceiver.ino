@@ -5,9 +5,11 @@
 #define PD      10  // to the DRA818 PD pin
 #define RX      3   // arduino serial RX pin to the DRA818 TX pin
 #define TX      4   // arduino serial TX pin to the DRA818 RX pin
+#define SQ_PIN  12 
 SoftwareSerial *dra_serial; // Serial connection to DRA818
 DRA818 *dra;                // the DRA object once instanciated
 float freq;                 // the next frequency to scan
+boolean SQ_ON=false;
 
 void setup() {
   // put your setup code here, to run once:
@@ -18,6 +20,7 @@ void setup() {
   Serial.print("initializing I/O ... ");  
   dra_serial = new SoftwareSerial(RX, TX); // Instantiate the Software Serial Object.
   pinMode(PD, OUTPUT);                     // Power control of the DRA818
+  pinMode(SQ_PIN, INPUT);     
   digitalWrite(PD,HIGH);                    // start at low power
   Serial.println("done");
 
@@ -32,7 +35,7 @@ void setup() {
    *  dra->volume(8);
    *  dra->filters(true, true, true);
    */
-  dra = DRA818::configure(dra_serial, DRA818_VHF, 146.520, 146.520, 4, 2, 0, 0, DRA818_12K5, true, true, true);
+  dra = DRA818::configure(dra_serial, DRA818_VHF, 146.520, 146.520, 1, 2, 0, 0, DRA818_12K5, true, true, true);
  
   if (!dra) {
     Serial.println("\nError while configuring DRA818");
@@ -45,7 +48,25 @@ void setup() {
 
 }
 
+
 void loop() {
   // put your main code here, to run repeatedly:
+if (digitalRead(SQ_PIN)==HIGH && SQ_ON==false)
+   {
+
+     dra = DRA818::configure(dra_serial, DRA818_VHF, 146.520, 146.520, 0, 2, 0, 0, DRA818_12K5, true, true, true);
+     SQ_ON=true;
+      Serial.println("SQ ON ");
+      Serial.println(digitalRead(SQ_PIN));
+     
+    
+   }
+   if (digitalRead(SQ_PIN)==LOW &&SQ_ON==true)
+    {
+   dra = DRA818::configure(dra_serial, DRA818_VHF, 146.520, 146.520, 1, 2, 0, 0, DRA818_12K5, true, true, true);
+   SQ_ON=false;
+      Serial.println("SQ OFF ");
+       Serial.println(digitalRead(SQ_PIN));
+      }
 
 }
