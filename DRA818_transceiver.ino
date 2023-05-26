@@ -35,7 +35,7 @@ void setup() {
    *  dra->volume(8);
    *  dra->filters(true, true, true);
    */
-  dra = DRA818::configure(dra_serial, DRA818_VHF, 146.520, 146.520, 1, 2, 0, 0, DRA818_12K5, true, true, true);
+  dra = DRA818::configure(dra_serial, DRA818_VHF, 145.490, 145.490, 1, 2, 0, 0, DRA818_12K5, true, true, true);
  
   if (!dra) {
     Serial.println("\nError while configuring DRA818");
@@ -56,7 +56,7 @@ if (digitalRead(SQ_PIN)==HIGH && SQ_ON==false)
 
      dra = DRA818::configure(dra_serial, DRA818_VHF, 146.520, 146.520, 0, 2, 0, 0, DRA818_12K5, true, true, true);
      SQ_ON=true;
-      
+      Serial.println("current freq 146.520");
      
     
    }
@@ -64,7 +64,7 @@ if (digitalRead(SQ_PIN)==HIGH && SQ_ON==false)
     {
    dra = DRA818::configure(dra_serial, DRA818_VHF, 145.490, 145.490, 1, 2, 0, 0, DRA818_12K5, true, true, true);
    SQ_ON=false;
-     
+      Serial.println("current freq 145.490");
       }
 
 }
