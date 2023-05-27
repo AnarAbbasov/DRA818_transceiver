@@ -9,7 +9,17 @@ SoftwareSerial dra_serial(3,4); // Serial connection to DRA818
               // the DRA object once instanciated
 float freq;                 // the next frequency to scan
 
+int initialiseDRA()
+{
+  return 0;
+}
 
+int sendToDRA(char  command[])
+{
+   dra_serial.println(command);
+    Serial.println(dra_serial.readString());
+   return 0;
+}
 
 void setup() {
   pinMode(PD, OUTPUT);                     // Power control of the DRA818
@@ -34,12 +44,16 @@ void setup() {
  
    dra_serial.println("AT+SETTAIL=1");
    Serial.println(dra_serial.readString());
-  dra_serial.println("AT+DMOSETGROUP=0,146.5200,146.5200,0000,4,0000");
+  dra_serial.println("AT+DMOSETGROUP=0,146.5200,146.5200,0000,1,0000");
    Serial.println(dra_serial.readString());
+   sendToDRA("AT+DMOSETVOLUME=1");
     
 }
 
 void loop() {
  
-
+sendToDRA("AT+DMOSETGROUP=0,146.5200,146.5200,0000,1,0000");
+delay(5000);
+sendToDRA("AT+DMOSETGROUP=0,145.4900,145.4900,0000,1,0000");
+delay(15000);
 }
