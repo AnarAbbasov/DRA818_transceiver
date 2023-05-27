@@ -34,7 +34,7 @@ void setup() {
  
    dra_serial.println("AT+SETTAIL=1");
    Serial.println(dra_serial.readString());
-  dra_serial.println("AT+DMOSETGROUP=0,146.5200,146.5200,0,4, 0");
+  dra_serial.println("AT+DMOSETGROUP=0,146.5200,146.5200,0000,4,0000");
    Serial.println(dra_serial.readString());
     
 }
