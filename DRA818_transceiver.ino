@@ -9,6 +9,28 @@ SoftwareSerial dra_serial(3,4); // Serial connection to DRA818
 //DRA818 *dra;                // the DRA object once instanciated
 float freq;                 // the next frequency to scan
 
+
+int  read_response() {
+  char ack[3];
+  ack[0] = ack[1] = ack[2] = '\0';  // Just to quiet some warnings.
+
+  
+  ack[2]=0;
+  long start = millis();
+  do {
+    if (dra_serial.available()) {
+      ack[0] = ack[1];
+      ack[1] = ack[2];
+      ack[2] =dra_serial.read();
+      Serial.println("reading");
+    }
+  } while (ack[2] != 0xa && (millis() - start) <   2000);
+ 
+
+   return (ack[0] == '0');
+}
+
+
 void setup() {
   // put your setup code here, to run once:
    Serial.begin(9600); // for logging
@@ -19,18 +41,22 @@ void setup() {
   
   
   dra_serial.begin(9600);
-  dra_serial.listen();
+  
     Serial.print("sending... ");
+     char i = 3;
+
+
+  while (i-- > 0) {
+   
+   Serial.println("trying... ");
   dra_serial.write("AT+DMOCONNECT\r\n");
-  Serial.println(dra_serial.available());
+ Serial.print(read_response());
 
-  while (dra_serial.available()==0);
-  //Serial.println("waiting");
-   Serial.println(dra_serial.read());
-
-
- 
-
+  }
+ dra_serial.write("S+146.520\r\n"); 
+ Serial.print(read_response());
+dra_serial.write("AT+VERSION\r\n"); 
+ Serial.print(read_response());
 }
 
 void loop() {
