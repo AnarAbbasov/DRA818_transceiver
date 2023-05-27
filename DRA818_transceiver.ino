@@ -12,18 +12,21 @@ float freq;                 // the next frequency to scan
 void setup() {
   // put your setup code here, to run once:
    Serial.begin(9600); // for logging
-   pinMode( RX , INPUT);
-    pinMode(TX, OUTPUT);
+   //pinMode( RX , INPUT);
+    //pinMode(TX, OUTPUT);
   
   Serial.print("initializing DRA818 ... ");
   
   
   dra_serial.begin(9600);
-  
+  dra_serial.listen();
     Serial.print("sending... ");
-  dra_serial.println("AT+DMOCONNECT\r\n");
-  while (dra_serial.available());
-   Serial.println(dra_serial.readString());
+  dra_serial.write("AT+DMOCONNECT\r\n");
+  Serial.println(dra_serial.available());
+
+  while (dra_serial.available()==0);
+  //Serial.println("waiting");
+   Serial.println(dra_serial.read());
 
 
  
